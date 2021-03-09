@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 app.get("/", (req, res) => {
-   res.send("API running");
+  res.send("API running");
 });
 
 //Middleware
@@ -20,6 +20,17 @@ app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/posts", require("./routes/api/posts"));
 app.use("/api/profile", require("./routes/api/profile"));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Api running");
+  });
+}
+
 app.listen(PORT, () => {
-   console.log(`Server started on ${PORT}`);
+  console.log(`Server started on ${PORT}`);
 });
