@@ -1,15 +1,22 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const connectDB = require("./config/db");
+const path = require("path");
 const PORT = process.env.PORT || 5000;
-
+dotenv.config({ path: `${__dirname}/config.env` });
 //connecting to Database
+// switch (process.env.NODE_ENV) {
+//   case 'production':
+//     path = `${__dirname}/prod.env`;
+//     break;
+//   default:
+//     path = `${__dirname}/dev.env`;
+// }
+// dotenv.config({ path });
 
 connectDB();
-app.get("/", (req, res) => {
-  res.send("API running");
-});
 
 //Middleware
 app.use(express.json({ extended: false }));
@@ -27,7 +34,7 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   app.get("/", (req, res) => {
-    res.send("Api running");
+    res.send("Api running 2");
   });
 }
 
